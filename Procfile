@@ -1,1 +1,1 @@
-web:    java -cp "target/dependency/*":target/classes Aesock
+web:    java -cp "target/dependency/*":target/classes Aeserv
