@@ -1,11 +1,14 @@
 import static spark.Spark.*;
 import spark.*;
+import java.sql.*;
+import java.net.*;
 
 public class Aeserv {
 
    public static void main(String[] args) {
       
       setPort(Integer.parseInt(System.getenv("PORT")));
+      
       get (new Route("/hello") {
          @Override
          public Object handle (Request request, Response response) {
@@ -20,6 +23,33 @@ public class Aeserv {
          }
       });
 
+      try {
+         Connection conn = getConnection();
+         Statement st = conn.createStatement();
+         Boolean ok = st.execute("CREATE TABLE cities ("
+                                       + "name            varchar(80),"
+                                       + "location        point);");
+         System.out.println("IT WENT: " + ok);
+         // rs.close();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+
+   }
+
+   private static Connection getConnection() throws URISyntaxException, SQLException {
+      try {
+         Class.forName("org.postgresql.Driver");
+      } catch (Exception e) {
+         System.out.println("FUCKFUCKFUCK");
+      }
+      URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+      String username = dbUri.getUserInfo().split(":")[0];
+      String password = dbUri.getUserInfo().split(":")[1];
+      String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath() + ":" + dbUri.getPort();
+
+      return DriverManager.getConnection(dbUrl, username, password);
    }
 
 }
