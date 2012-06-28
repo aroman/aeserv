@@ -25,11 +25,11 @@ public class Aeserv {
 
       try {
          Connection conn = getConnection();
+         // Statement st = conn.createStatement();
+         // Boolean res = st.execute("CREATE TABLE cities ("
+         //                               + "name            varchar(80));");
          Statement st = conn.createStatement();
-         Boolean res = st.execute("CREATE TABLE cities ("
-                                       + "name            varchar(80));");
-         st = conn.createStatement();
-         res = st.execute("INSERT INTO cities VALUES (derp)");
+         Boolean res = st.execute("INSERT INTO cities VALUES (derp)");
          st = conn.createStatement();
          ResultSet rs = st.executeQuery("SELECT * FROM cities WHERE name = 'derp'");
          while (rs.next()) {
