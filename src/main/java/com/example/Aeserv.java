@@ -5,6 +5,8 @@ import java.net.*;
 
 public class Aeserv {
 
+   static Connection conn;
+
    public static void main(String[] args) {
       
       setPort(Integer.parseInt(System.getenv("PORT")));
@@ -24,10 +26,8 @@ public class Aeserv {
       });
 
       try {
-         Connection conn = getConnection();
-         // Statement st = conn.createStatement();
-         // Boolean res = st.execute("CREATE TABLE cities ("
-         //                               + "name            varchar(80));");
+         conn = getConnection();
+         createTables();
          Statement st = conn.createStatement();
          Boolean res = st.execute("INSERT INTO cities VALUES ('derp')");
          st = conn.createStatement();
@@ -39,11 +39,25 @@ public class Aeserv {
          rs.close();
       } catch (Exception e) {
          e.printStackTrace();
+         System.exit(1);
       }
 
    }
 
-   private static Connection getConnection() throws URISyntaxException, SQLException {
+   static void createTables () throws URISyntaxException, SQLException {
+      Statement st = conn.createStatement();
+      st.execute("CREATE TABLE messages (user varchar(80), message text);");
+   }
+
+   static void saveMessage (String message) {
+
+   }
+
+   static void readMessages (String user) {
+      
+   }
+
+   static Connection getConnection () throws URISyntaxException, SQLException {
       try {
          Class.forName("org.postgresql.Driver");
       } catch (Exception e) {
