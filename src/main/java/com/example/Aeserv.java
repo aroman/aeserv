@@ -31,7 +31,7 @@ public class Aeserv {
          Statement st = conn.createStatement();
          Boolean res = st.execute("INSERT INTO cities VALUES (derp)");
          st = conn.createStatement();
-         ResultSet rs = st.executeQuery("SELECT * FROM cities WHERE name = 'derp'");
+         ResultSet rs = st.executeQuery("SELECT * FROM cities");
          while (rs.next()) {
              System.out.print("Column 1 returned ");
              System.out.println(rs.getString(1));
