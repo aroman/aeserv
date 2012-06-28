@@ -12,6 +12,13 @@ public class Aeserv {
          }
       });
 
+      post (new Route("/new") {
+         @Override
+         public Object handle (Request request, Response response) {
+            return "Username was: " + request.queryParams("from") + "\n\nWhat you want, baby I got it: " + request.body();
+         }
+      });
+
    }
 
 }
