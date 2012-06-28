@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp ":dependencies/jetty-webapp-7.3.0.v20110203.jar:dependencies/slf4j-api-1.6.1.jar:dependencies/log4j-1.2.14.jar:dependencies/slf4j-log4j12-1.6.1.jar:dependencies/servlet-api-3.0.pre4.jar:dependencies/spark-0.9.9.3.jar" Aeserv
