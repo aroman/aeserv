@@ -25,7 +25,7 @@ public class Aeserv {
                saveMessage(request.queryParams("to"), request.body());
                response.status(200);
                return "OK";
-            } else {
+            } catch (Exception e) {
                e.printStackTrace();
                response.status(500);
                return "FAIL";
