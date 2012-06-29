@@ -54,7 +54,7 @@ public class Aeserv {
       Statement st = conn.createStatement();
       // This will throw if the table has already been created.
       try {
-         st.execute("CREATE TABLE messages (usr varchar(80) PRIMARY KEY, msg text);");
+         st.execute("CREATE TABLE messages (usr varchar(80), msg text);");
       } catch (Exception e) {
          System.out.println("createTables threw and exception, nbd.");
       }
