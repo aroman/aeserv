@@ -48,6 +48,7 @@ public class Aeserv {
                String from = request.queryParams("from");
                String to = request.queryParams("to");
                String body = request.body();
+               System.out.println(request.body());
                System.out.println(body);
                saveMessage(from, to, body);
                response.status(200);
