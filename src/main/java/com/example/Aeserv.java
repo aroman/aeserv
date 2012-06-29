@@ -60,7 +60,7 @@ public class Aeserv {
       PreparedStatement ps = conn.prepareStatement("INSERT INTO messages VALUES (?, ?)");
       ps.setString(1, user);
       ps.setString(2, message);
-      ps.executeQuery();
+      ps.execute();
    }
 
    static void readMessages (String user) {
