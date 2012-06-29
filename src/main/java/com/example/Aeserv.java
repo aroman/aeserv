@@ -88,11 +88,7 @@ public class Aeserv {
    static void createTables () throws URISyntaxException, SQLException {
       Statement st = conn.createStatement();
       // This will throw if the table has already been created
-      try {
-         st.execute("CREATE TABLE messages (from varchar(30), to varchar(80), msg text);");
-      } catch (Exception e) {
-         System.out.println("createTables threw and exception, nbd.");
-      }
+      st.execute("CREATE TABLE messages (from varchar(30), to varchar(80), msg text)");
    }
 
    // Saves a message from one user to another
