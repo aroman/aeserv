@@ -48,6 +48,7 @@ public class Aeserv {
                String from = request.queryParams("from");
                String to = request.queryParams("to");
                String body = request.body();
+               System.out.println(body);
                saveMessage(from, to, body);
                response.status(200);
                return "OK";
@@ -99,6 +100,7 @@ public class Aeserv {
       ps.setString(2, to);
       ps.setString(3, message);
       ps.execute();
+      System.out.println(message);
    }
 
    // TODO: Return List, not String
