@@ -35,7 +35,9 @@ public class Aeserv {
          @Override
          public Object handle (Request request, Response response) {
             try {
-               saveMessage(request.queryParams("to"), request.body());
+               String body = request.body();
+               System.out.println(body);
+               saveMessage(request.queryParams("to"), body);
                response.status(200);
                return "OK";
             } catch (Exception e) {
