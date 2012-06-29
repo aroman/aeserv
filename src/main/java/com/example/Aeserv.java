@@ -10,14 +10,17 @@ public class Aeserv {
    public static void main(String[] args) {
       
       setPort(Integer.parseInt(System.getenv("PORT")));
-      
-      get (new Route("/hello") {
-         @Override
-         public Object handle (Request request, Response response) {
-            return "Hello World!";
-         }
-      });
 
+      // Initialize database
+      try {
+         conn = getConnection();
+         createTables();
+      } catch (Exception e) {
+         e.printStackTrace();
+         System.exit(1);
+      }
+
+      // Define route handlers
       get (new Route("/johnny") {
          @Override
          public Object handle (Request request, Response response) {
@@ -36,9 +39,10 @@ public class Aeserv {
          @Override
          public Object handle (Request request, Response response) {
             try {
+               String from = request.queryParams("from");
+               String to = request.queryParams("to");
                String body = request.body();
-               System.out.println(body);
-               saveMessage(request.queryParams("to"), body);
+               saveMessage(from, to, body);
                response.status(200);
                return "OK";
             } catch (Exception e) {
@@ -53,7 +57,9 @@ public class Aeserv {
          @Override
          public Object handle (Request request, Response response) {
             try {
-               String msgs = getMessages(request.queryParams("from"));
+               String from = request.queryParams("from");
+               String to = request.queryParams("to");
+               String msgs = getMessages(from, to);
                response.status(200);
                return msgs;
             } catch (Exception e) {
@@ -64,48 +70,45 @@ public class Aeserv {
          }
       });
 
-      try {
-         conn = getConnection();
-         createTables();
-      } catch (Exception e) {
-         e.printStackTrace();
-         System.exit(1);
-      }
 
    }
 
+   // Secret method to drop the tables
    static void dropTables () throws URISyntaxException, SQLException {
       Statement st = conn.createStatement();
       st.execute("DROP TABLE messages");
    }
 
+   // Create the tables; will not explode if they already exist
    static void createTables () throws URISyntaxException, SQLException {
       Statement st = conn.createStatement();
-      // This will throw if the table has already been created.
+      // This will throw if the table has already been created
       try {
-         st.execute("CREATE TABLE messages (usr varchar(80), msg text);");
+         st.execute("CREATE TABLE messages (from varchar(30), to varchar(80), msg text);");
       } catch (Exception e) {
          System.out.println("createTables threw and exception, nbd.");
       }
    }
 
-   static void saveMessage (String user, String message) throws SQLException {
+   // Saves a message from one user to another
+   static void saveMessage (String from, String to, String message) throws SQLException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("INSERT INTO messages VALUES (?, ?)");
-      ps.setString(1, user);
-      ps.setString(2, message);
-      System.out.println(message);
+      PreparedStatement ps = conn.prepareStatement("INSERT INTO messages VALUES (?, ?, ?)");
+      ps.setString(1, from);
+      ps.setString(2, to);
+      ps.setString(3, message);
       ps.execute();
    }
 
-   static String getMessages (String user) throws SQLException {
+   // TODO: Return List, not String
+   // Returns a List of the messages
+   static String getMessages (String from, String to) throws SQLException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = ?");
+      PreparedStatement ps = conn.prepareStatement("SELECT from, msg FROM messages WHERE usr = ?");
       ps.setString(1, user);
       ResultSet rs = ps.executeQuery();
       StringBuilder sb = new StringBuilder();
       while (rs.next()) {
-         System.out.println(rs.getString(1));
          sb.append(rs.getString(1) + "\n");
       }
       rs.close();
