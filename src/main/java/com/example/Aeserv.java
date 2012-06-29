@@ -52,7 +52,7 @@ public class Aeserv {
 
    static void createTables () throws URISyntaxException, SQLException {
       Statement st = conn.createStatement();
-      st.execute("CREATE TABLE messages (user varchar(80), message text);");
+      st.execute("CREATE TABLE messages (usr varchar(80) PRIMARY KEY, msg text);");
    }
 
    static void saveMessage (String user, String message) throws SQLException {
