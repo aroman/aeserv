@@ -1,11 +1,17 @@
-import static spark.Spark.*;
-import spark.*;
 import java.sql.*;
 import java.net.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.codehaus.jackson.map.*;
+
+import spark.*;
+import static spark.Spark.*;
 
 public class Aeserv {
 
    static Connection conn;
+   static ObjectMapper mapper = new ObjectMapper();
 
    public static void main(String[] args) {
       
@@ -70,7 +76,6 @@ public class Aeserv {
          }
       });
 
-
    }
 
    // Secret method to drop the tables
@@ -102,18 +107,23 @@ public class Aeserv {
 
    // TODO: Return List, not String
    // Returns a List of the messages
-   static String getMessages (String from, String to) throws SQLException {
+   static String getMessages (String from, String to) throws SQLException, IOException {
       Statement st = conn.createStatement();
       PreparedStatement ps = conn.prepareStatement("SELECT from, msg FROM messages WHERE from = ? AND to = ?");
       ps.setString(1, from);
       ps.setString(2, to);
       ResultSet rs = ps.executeQuery();
-      StringBuilder sb = new StringBuilder();
+      ArrayList<HashMap<String, String>> messages = new ArrayList<HashMap<String, String>>();
+      StringWriter sw = new StringWriter();
       while (rs.next()) {
-         sb.append(rs.getString(1) + "\n");
+         HashMap<String, String> message = new HashMap<String, String>();
+         message.put("username", rs.getString(1));
+         message.put("message", rs.getString(2));
+         messages.add(message);
       }
       rs.close();
-      return sb.toString();
+      mapper.writeValue(sw, messages);
+      return sw.toString();
    }
 
    static Connection getConnection () throws URISyntaxException, SQLException, ClassNotFoundException {
