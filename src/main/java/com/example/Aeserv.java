@@ -96,12 +96,13 @@ public class Aeserv {
 
    static String getMessages (String user) throws SQLException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = ?");
+      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = some_user");
       ps.setString(1, user);
       ResultSet rs = ps.executeQuery();
       StringBuilder sb = new StringBuilder();
       while (rs.next()) {
-         sb.append(rs.getString(0) + "\n");
+         System.out.println(rs.getString(1));
+         sb.append(rs.getString(1) + "\n");
       }
       rs.close();
       return sb.toString();
