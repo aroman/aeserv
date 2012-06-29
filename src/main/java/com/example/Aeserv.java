@@ -88,7 +88,7 @@ public class Aeserv {
    static void createTables () throws URISyntaxException, SQLException {
       Statement st = conn.createStatement();
       // This will throw if the table has already been created
-      st.execute("CREATE TABLE messages (from varchar(30), to varchar(80), msg text)");
+      st.execute("CREATE TABLE messages (frm_usr varchar(30), to_usr varchar(80), msg text)");
    }
 
    // Saves a message from one user to another
@@ -105,7 +105,7 @@ public class Aeserv {
    // Returns a List of the messages
    static String getMessages (String from, String to) throws SQLException, IOException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("SELECT from, msg FROM messages WHERE from = ? AND to = ?");
+      PreparedStatement ps = conn.prepareStatement("SELECT frm_usr, msg FROM messages WHERE frm_usr = ? AND to_usr = ?");
       ps.setString(1, from);
       ps.setString(2, to);
       ResultSet rs = ps.executeQuery();
