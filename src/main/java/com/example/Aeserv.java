@@ -23,6 +23,7 @@ public class Aeserv {
          public Object handle (Request request, Response response) {
             try {
                dropTables();
+               createTables();
                return "Okay little Johnny";
             } catch (Exception e) {
                response.status(500);
