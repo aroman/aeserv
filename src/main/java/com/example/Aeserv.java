@@ -46,16 +46,24 @@ public class Aeserv {
          }
       });
 
+      get (new Route("/read") {
+         @Override
+         public Object handle (Request request, Response response) {
+            try {
+               String msgs = getMessages(request.queryParams("from"));
+               response.status(200);
+               return msgs;
+            } catch (Exception e) {
+               e.printStackTrace();
+               response.status(500);
+               return "FAIL";
+            }
+         }
+      });
+
       try {
          conn = getConnection();
          createTables();
-         // st = conn.createStatement();
-         // ResultSet rs = st.executeQuery("SELECT * FROM cities");
-         // while (rs.next()) {
-         //     System.out.print("Column 1 returned ");
-         //     System.out.println(rs.getString(1));
-         // }
-         // rs.close();
       } catch (Exception e) {
          e.printStackTrace();
          System.exit(1);
@@ -86,8 +94,17 @@ public class Aeserv {
       ps.execute();
    }
 
-   static void readMessages (String user) {
-
+   static String getMessages (String user) throws SQLException {
+      Statement st = conn.createStatement();
+      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = ?");
+      ps.setString(1, user);
+      ResultSet rs = ps.executeQuery();
+      StringBuilder sb = new StringBuilder();
+      while (rs.next()) {
+         sb.append(rs.getString(1) + "\n");
+      }
+      rs.close();
+      return sb.toString();
    }
 
    static Connection getConnection () throws URISyntaxException, SQLException {
