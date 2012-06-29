@@ -91,6 +91,7 @@ public class Aeserv {
       PreparedStatement ps = conn.prepareStatement("INSERT INTO messages VALUES (?, ?)");
       ps.setString(1, user);
       ps.setString(2, message);
+      System.out.println(message);
       ps.execute();
    }
 
