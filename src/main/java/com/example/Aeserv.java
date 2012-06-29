@@ -104,8 +104,9 @@ public class Aeserv {
    // Returns a List of the messages
    static String getMessages (String from, String to) throws SQLException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("SELECT from, msg FROM messages WHERE usr = ?");
-      ps.setString(1, user);
+      PreparedStatement ps = conn.prepareStatement("SELECT from, msg FROM messages WHERE from = ? AND to = ?");
+      ps.setString(1, from);
+      ps.setString(2, to);
       ResultSet rs = ps.executeQuery();
       StringBuilder sb = new StringBuilder();
       while (rs.next()) {
