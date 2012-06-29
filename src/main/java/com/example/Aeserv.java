@@ -112,12 +112,8 @@ public class Aeserv {
       return sb.toString();
    }
 
-   static Connection getConnection () throws URISyntaxException, SQLException {
-      try {
-         Class.forName("org.postgresql.Driver");
-      } catch (Exception e) {
-         System.out.println("FUCKFUCKFUCK");
-      }
+   static Connection getConnection () throws URISyntaxException, SQLException, ClassNotFoundException {
+      Class.forName("org.postgresql.Driver");
       URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
       String username = dbUri.getUserInfo().split(":")[0];
@@ -128,4 +124,3 @@ public class Aeserv {
    }
 
 }
-
