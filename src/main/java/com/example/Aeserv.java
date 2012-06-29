@@ -56,7 +56,7 @@ public class Aeserv {
       try {
          st.execute("CREATE TABLE messages (usr varchar(80) PRIMARY KEY, msg text);");
       } catch (Exception e) {
-         System.out.println(Exception.getMessage());
+         System.out.println("createTables threw and exception, nbd.");
       }
    }
 
