@@ -96,7 +96,7 @@ public class Aeserv {
 
    static String getMessages (String user) throws SQLException {
       Statement st = conn.createStatement();
-      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = some_user");
+      PreparedStatement ps = conn.prepareStatement("SELECT msg FROM messages WHERE usr = ?");
       ps.setString(1, user);
       ResultSet rs = ps.executeQuery();
       StringBuilder sb = new StringBuilder();
