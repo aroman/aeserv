@@ -18,6 +18,19 @@ public class Aeserv {
          }
       });
 
+      get (new Route("/johnny") {
+         @Override
+         public Object handle (Request request, Response response) {
+            try {
+               dropTables();
+               return "Okay little Johnny";
+            } catch (Exception e) {
+               response.status(500);
+               return "Not so fast";
+            }
+         }
+      });
+
       post (new Route("/new") {
          @Override
          public Object handle (Request request, Response response) {
@@ -48,6 +61,11 @@ public class Aeserv {
          System.exit(1);
       }
 
+   }
+
+   static void dropTables () throws URISyntaxException, SQLException {
+      Statement st = conn.createStatement();
+      st.execute("DROP TABLE messages");
    }
 
    static void createTables () throws URISyntaxException, SQLException {
