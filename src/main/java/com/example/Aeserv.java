@@ -101,7 +101,7 @@ public class Aeserv {
       ResultSet rs = ps.executeQuery();
       StringBuilder sb = new StringBuilder();
       while (rs.next()) {
-         sb.append(rs.getString(1) + "\n");
+         sb.append(rs.getString(0) + "\n");
       }
       rs.close();
       return sb.toString();
